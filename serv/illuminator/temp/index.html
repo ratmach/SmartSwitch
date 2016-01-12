@@ -1,0 +1,14 @@
+<html>
+<head>
+<title>Progammable Switch V0.1</title>
+</head>
+<body>
+Greetings: {{ user }}
+<form action="/switch/params/">
+{% for name in names %}
+	<input name="{{ name.name }}" {{ name.status }} type="checkbox">{{name.text}}</input><br>
+{% endfor %}
+<input type="submit">
+</form>
+</body>
+</html>
