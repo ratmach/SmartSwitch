@@ -1,0 +1,48 @@
+<html>
+<head>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<title>Progammable Switch V0.1</title>
+</head>
+<style>
+	body{
+		background: -webkit-linear-gradient(#99FF66, #009999); /* For Safari 5.1 to 6.0 */
+		background: -o-linear-gradient(#99FF66, #009999); /* For Opera 11.1 to 12.0 */
+		background: -moz-linear-gradient(#99FF66, #009999); /* For Firefox 3.6 to 15 */
+		background: linear-gradient(#99FF66, #009999); /* Standard syntax */
+	}
+	.authForm{
+		position: relative;
+		height: 100%;
+		top: 50%;
+		transform: translateY(-50%);
+		width:300px;margin: 0 auto;
+		height:120px;
+		text-align: center;
+	}
+	label{
+		float:left;
+	}
+	.btn{
+		float:right;
+	}
+</style>
+<body>
+	<form class="authForm" action="/switch/auth/" method="POST">
+		<div class="form-group">
+		  <label for="usr">Username:</label>
+		  <input type="text" name="username" class="form-control" id="usr">
+		</div>
+		<div class="form-group">
+		  <label for="pwd">Password:</label>
+		  <input type="password" name="password" class="form-control" id="pwd">
+		</div>
+		{% csrf_token %}
+		<div class="form-group">
+			<button class="btn btn-success">Log in</button>
+		</div>
+	</form>
+</body>
+</html>
