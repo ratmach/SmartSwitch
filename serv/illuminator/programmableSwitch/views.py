@@ -6,6 +6,7 @@ import serial
 import string
 import time
 import random
+from datetime import datetime
 
 accessLog = []
 
@@ -44,10 +45,10 @@ def logout(request):
 	return response;
 	
 def registerPoints(request):
-	points.objects.create(name="1",watt=0.0, pID=0,icon="default.png",state=False,type=0);
-	points.objects.create(name="2",watt=0.0, pID=1,icon="default.png",state=False,type=0);
-	points.objects.create(name="3",watt=0.0, pID=2,icon="default.png",state=False,type=0);
-	points.objects.create(name="4",watt=0.0, pID=3,icon="default.png",state=False,type=0);
+	points.objects.create(name="1",watt=0.0, pID=0,icon="default.png",state=False,type=0,whoChanged = "");
+	points.objects.create(name="2",watt=0.0, pID=1,icon="default.png",state=False,type=0,whoChanged = "");
+	points.objects.create(name="3",watt=0.0, pID=2,icon="default.png",state=False,type=0,whoChanged = "");
+	points.objects.create(name="4",watt=0.0, pID=3,icon="default.png",state=False,type=0,whoChanged = "");
 	return HttpResponse("done")
 
 def mIndex(request,user):
@@ -60,18 +61,22 @@ def index(request):
 	if("UID" in request.COOKIES):
 		u = user.objects.filter(UID=request.COOKIES["UID"])
 		if(len(u) > 0):
-			p = points.objects.filter(type__lte = u[0].type)
+			p = points.objects.filter()
 			return render_to_response("index.html",{'user':u[0],'points':p})
 	return auth(request)
 
 def changeStates(request):
 	outp = ""
 	for key in request.GET.keys():
-		points.objects.filter(pID = key).update(state=(request.GET[key] == "0"))
+		t = user.objects.get(UID=request.COOKIES["UID"]);
+		points.objects.filter(pID = key,type__lte =t.type).update(state=(request.GET[key] == "0"),whoChanged = t.username,stateChanged = datetime.now().strftime("%Y-%m-%d %H:%M:%S"));
 		p = points.objects.get(pID = key);
 		outp+=key + str(p.state) + "\n"
 	updateBoard()
-	return HttpResponse(outp);
+	return index(request);
+
+def changeType(request):
+	return HttpResponse("1");
 	
 def displayLog(request):
 	a = points.objects.get(pID=0)
@@ -92,8 +97,5 @@ def updateBoard():
 		
 		out = ""
 		while ser.inWaiting() > 0:
-			print(ser.read())
-
-		if out != '':
-			print(">>" + out)
+			ser.read()
 updateBoard()

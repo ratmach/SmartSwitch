@@ -7,17 +7,23 @@
 <title>Progammable Switch V0.1</title>
 </head>
 <body>
-Greetings: {{ user }}
-	{{user.type}}
+მოგესალმებით: {{ user.username }} <br>
+თქვენ გაქვთ პრივილეგია: {{user.type}}
+<br>
 <form action="/switch/changeStates/" method="GET">
 {% for point in points %}
+	<a href="/switch/changeStates/?{{ point.pID }}=0"> ჩართე {{point.name}}</a>
+	<a href="/switch/changeStates/?{{ point.pID }}=1"> გამორთე {{point.name}}</a>
 	{% if point.state %}
-		<input type="checkbox" name="{{ point.pID }}" checked type="checkbox">{{point.name}}</input><br>
+		ჩართულია
 	{% else %}
-		<input type="checkbox" name="{{ point.pID }}" type="checkbox">{{point.name}}</input><br>
+		გარმოთულია
 	{% endif %}
+	პრივილეგია: {{ point.type }}
+	ბოლოს შეცვალა: {{ point.whoChanged }} -მ
+	{{ point.stateChanged }}
+	<br>
 {% endfor %}
-<input type="submit">
 </form>
 </body>
 </html>
